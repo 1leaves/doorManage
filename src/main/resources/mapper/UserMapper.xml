@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yyq.doormanage1.mapper.UserMapper">
+	
+	<resultMap type="com.yyq.doormanage1.entity.User" id="baseResult">
+		<id property="id" column="id"/>
+    	<result property="account" column="account"/>
+    	<result property="username" column="username"/>
+    	<result property="type" column="type"/>
+    	<result property="status" column="status"/>
+<!--    	<result property="wechatId" column="wechat_id"/>-->
+	    <collection property="list" ofType="com.yyq.doormanage1.entity.Room" column="id" select="com.yyq.doormanage1.mapper.RecordMapper.queryByUserId"></collection>
+	</resultMap>
+
+	<sql id="select">
+		id,username,type,status,account/*,wechat_id*/
+	</sql>
+
+	<insert id="save" parameterType="com.yyq.doormanage1.entity.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+		INSERT INTO dm_user
+		(
+		account,
+		username,
+		password,
+		type,
+		status,
+		token,
+		wechat_id,
+		create_date,
+		update_date
+		) VALUES (
+		#{account},
+		#{username},
+		#{password},
+		2,
+		3,
+		#{token},
+		#{_parameter},
+		SYSDATE(),
+		SYSDATE()
+		)
+	</insert>
+
+	<select id="queryByParams" parameterType="map" resultType="com.yyq.doormanage1.entity.User">
+		SELECT
+		<include refid="select" />
+		FROM dm_user
+		<where>
+			1 = 1
+			<if test="params.username != null and params.username != ''">
+				and username like concat('%',${params.username},'%')
+			</if>
+			<if test="params.status != null">
+				and status =  ${params.status}
+			</if>
+		</where>
+	</select>
+
+	<select id="login" resultType="com.yyq.doormanage1.entity.User">
+		SELECT
+		<include refid="select" />
+		from dm_user
+		<where>
+			account = #{account} and password = #{password} and status = 2
+		</where>
+	</select>
+	
+	<select id="queryById" resultMap="baseResult" >
+		select <include refid="select"/> from dm_user
+		<where>
+			id = #{id}
+		</where>
+	</select>
+	
+	<select id="queryByWechatId" resultMap="baseResult" >
+		select <include refid="select"/> from dm_user
+		<where>
+			wechat_id = #{wechatId}
+		</where>
+	</select>
+	
+	
+
+</mapper>

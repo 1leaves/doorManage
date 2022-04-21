@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+# Spring配置
+spring:
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/yyq?useUnicode=true & characterEncoding=utf-8 &
+      useSSL=true & serverTimezone=Asia/Shanghai
+    username: root
+    password: 981126
+hikari:
+  readOnly: false
+  connectionTimeout: 60000
+  idleTimeout: 20000
+  validationTimeout: 3000
+  maxLifetime: 60000
+  loginTimeout: 5
+  maximumPoolSize: 60
+  minimumIdle: 10
+# MyBatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.yyq.doormanage1.entity
+
+logging:
+  level:
+    com.yyq.doormanage1.dao : debug
+    org.springframework: warn
+## PageHelper分页插件
+#pagehelper:
+#  helperDialect: mysql
+#  reasonable: true
+#  supportMethodsArguments: true
+#  params: count=countSql
