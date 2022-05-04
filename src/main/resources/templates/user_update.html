@@ -63,61 +63,41 @@
                                 <form role="form" class="form-horizontal">
                                     <div class="col-md-12">
                                         <div class="form-group" style="margin-top: 10px">
-                                            <h3 style="margin-right: 10px">注册</h3>
+                                            <h3 style="margin-right: 10px">修改信息</h3>
                                         </div>
                                         <div class="hr-line-dashed"></div>
                                     </div>
                                     <div class="form-group" style="margin-top: 10px">
-                                        <label for="account" class="col-md-1 control-label">账号*</label>
+                                        <label for="account" class="col-md-1 control-label">账号</label>
                                         <div class="col-md-10">
                                             <input class="form-control" type="text" placeholder="请输入账号" id="account">
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-top: 10px">
-                                        <label for="username" class="col-md-1 control-label">用户名*</label>
+                                        <label for="username" class="col-md-1 control-label">用户名</label>
                                         <div class="col-md-10">
                                             <input class="form-control" type="text" placeholder="请输入用户名" id="username">
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-top: 10px">
-                                        <label for="password" class="col-md-1 control-label">密码*</label>
-                                        <div class="col-md-10">
-                                            <input class="form-control" type="password" placeholder="请输入密码"
-                                                   id="password">
-                                        </div>
-                                    </div>
-                                    <div class="form-group" style="margin-top: 10px">
-                                        <label for="_password" class="col-md-1 control-label">确认密码*</label>
-                                        <div class="col-md-10">
-                                            <input class="form-control" type="password" placeholder="请输入确认密码"
-                                                   id="_password">
-                                        </div>
-                                    </div>
-                                    <div class="form-group" style="margin-top: 10px">
-                                        <label for="address" class="col-md-1 control-label">地址*</label>
-                                        <div class="col-md-10">
-                                            <input class="form-control" type="text" placeholder="请输入地址" id="address">
-                                        </div>
-                                    </div>
-                                    <div class="form-group" style="margin-top: 10px">
-                                        <label for="gender" class="col-md-1 control-label">性别*</label>
+                                        <label for="gender" class="col-md-1 control-label">性别</label>
                                         <div class="col-md-2">
                                             <select class="form-control" id="gender">
                                                 <option value="男">男</option>
                                                 <option value="女">女</option>
                                             </select>
                                         </div>
-                                        <label for="birth" class="col-md-1 control-label">出生日期*</label>
+                                        <label for="birth" class="col-md-1 control-label">出生日期</label>
                                         <div class="col-md-2">
                                             <input class="form-control" type="text" placeholder="请输入出生日期" id="birth">
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-top: 10px">
-                                        <label for="phone" class="col-md-1 control-label">手机*</label>
+                                        <label for="phone" class="col-md-1 control-label">手机</label>
                                         <div class="col-md-4">
                                             <input class="form-control" type="text" placeholder="请输入手机" id="phone">
                                         </div>
-                                        <label for="email" class="col-md-1 control-label">邮箱*</label>
+                                        <label for="email" class="col-md-1 control-label">邮箱</label>
                                         <div class="col-md-5">
                                             <input class="form-control" type="text" placeholder="请输入邮箱" id="email">
                                         </div>
@@ -278,7 +258,7 @@
     });
 
     $("#reset").on("click", function () {
-        window.location.href = history.go(-1);
+        window.location.href = "/doorManage/user/user_room_list";
     });
 
 

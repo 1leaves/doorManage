@@ -9,7 +9,7 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <link rel="shortcut icon" href="favicon.ico">
+<!--    <link rel="shortcut icon" href="favicon.ico">-->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -69,10 +69,13 @@
                 },
                 dataType: "json",
                 success: function (result) {
-                    console.log(result)
                     if (null != result && "" != result && result.success) {
                         $.cookie("user", JSON.stringify(result.data.user), {expires: 1, path: '/'});
-                        window.location.href = "/doorManage/user/main";
+                        if(result.data.user.type==1){
+                            window.location.href = "/doorManage/user/main1";
+                        }else if (result.data.user.type==2){
+                            window.location.href = "/doorManage/user/main2";
+                        }
                     } else {
                         alert("登录出错");
                     }

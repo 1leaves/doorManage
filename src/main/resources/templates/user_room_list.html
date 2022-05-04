@@ -66,16 +66,13 @@
                     <table class="table table-hover top-space txt_-center">
                         <thead>
                         <tr>
-                            <th width="5%">序号</th>
-                            <th width="5%">用户名</th>
+                            <th width="10% ">序号</th>
+                            <th width="10%">用户名</th>
                             <th width="15%">账号</th>
-                            <th width="5%">性别</th>
-                            <th width="15%">手机号</th>
-                            <th width="15%">生日</th>
-                            <th width="5%">权限</th>
-                            <th width="5%">状态</th>
-                            <th width="15%">创建时间</th>
-                            <th width="15%">操作</th>
+                            <th width="10%">权限</th>
+                            <th width="10%">状态</th>
+                            <th width="20%">创建时间</th>
+                            <th width="25%">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -136,16 +133,11 @@
                                 var trs = "";
                                 var stats = "";
                                 var status = "未审核";
-                                var type = "用户";
                                 if (value.status == '2') {
-                                    stats = "display:none";
+                                    stats = "disabled";
                                     status = "已审核";
                                 }
-                                if (value.type == '1') {
-                                    type = "管理员";
-                                }
-                            // <button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button>
-                                trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px ;' + stats + '" ><i class="fa fa-paste padding-right5" ></i>审核</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>注销</button></td></tr>'
+                                trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + value.type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px" ' + stats + ' ><i class="fa fa-paste padding-right5" ></i>审核</button><button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>注销</button></td></tr>'
                                 $("tbody").append(trs);
                             })
                             // allcount = result.data.rowCount;
@@ -182,21 +174,11 @@
                         var trs = "";
                         var stats = "";
                         var status = "未审核";
-                        var type = "用户";
-                        var sex = "男";
                         if (value.status == '2') {
-                            stats = "display:none";
+                            stats = "disabled";
                             status = "已审核";
                         }
-                        if (value.type== '1') {
-                            type = "管理员";
-                        }
-                        if (value.sex== '1') {
-                            type = "女";
-                        }
-
-                    // <button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button>
-                        trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>'+ sex + '</td><td>' + value.phone + '</td><td>' + value.birthday + '</td><td>' + type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px ;' + stats + '" ><i class="fa fa-paste padding-right5" ></i>审核</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>注销</button></td></tr>'
+                        trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + value.type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px" ' + stats + ' ><i class="fa fa-paste padding-right5" ></i>审核</button><button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>注销</button></td></tr>'
                         $("tbody").append(trs);
                     })
                     allcount = result.data.rowCount;
@@ -265,9 +247,9 @@
         });
     }
 
-    // function edit(id) {
-    //     location.href = "/doorManage/user/user_update?id=" + id;
-    // }
+    function edit(id) {
+        location.href = "/electric/user/user_update?id=" + id;
+    }
 
 </script>
 

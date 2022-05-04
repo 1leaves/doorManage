@@ -35,18 +35,20 @@
                         </a>
                     </div>
                 </li>
-                <li class="msg">
+<!--                机房管理-->
+                <li class="msg active">
                     <a href="#">
                         <i class="fa fa fa-bar-chart-o"></i>
                         <span class="nav-label">机房管理</span>
                         <span class="fa arrow"></span>
                     </a>
                     <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="/doorManage/room/room_list">机房列表</a>
+                        <li class="active">
+                            <a class="J_menuItem" href="/doorManage/room/room_list" >机房列表</a>
                         </li>
                     </ul>
                 </li>
+<!--                用户管理-->
                 <li class="msg" id="user">
                     <a href="#">
                         <i class="fa fa fa-bar-chart-o"></i>
@@ -59,6 +61,7 @@
                         </li>
                     </ul>
                 </li>
+<!--                权限管理-->
                 <li class="msg" id="manage">
                     <a href="#">
                         <i class="fa fa fa-bar-chart-o"></i>
@@ -67,7 +70,21 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem role" href="/doorManage/user/user_list">权限列表</a>
+                            <a class="J_menuItem role" href="/doorManage/user/user_room_list">用户权限管理</a>
+                            <a class="J_menuItem role" href="/doorManage/user/user_list">机房权限申请审核</a>
+                        </li>
+                    </ul>
+                </li>
+<!--                访问记录-->
+                <li class="msg" id="record">
+                    <a href="#">
+                        <i class="fa fa fa-bar-chart-o"></i>
+                        <span class="nav-label">访问记录</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="J_menuItem role" href="/doorManage/user/user_list">访问记录</a>
                         </li>
                     </ul>
                 </li>

@@ -23,7 +23,7 @@ public class RoomController {
 
 	@GetMapping("/main")
 	public String location1() {
-		return "main";
+		return "main1";
 	}
 
 	@RequestMapping("/{location}")

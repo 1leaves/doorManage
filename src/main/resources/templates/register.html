@@ -21,13 +21,13 @@
         <h2>注册门禁账号</h2>
         <form class="m-t" role="form" action="#">
             <div class="form-group">
-                <input type="text" class="form-control" id="account" placeholder="账号" required="手机号">
+                <input type="text" class="form-control" id="account" placeholder="账号" required="">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" id="password" placeholder="密码" required="6位数字">
+                <input type="password" class="form-control" id="password" placeholder="密码" required="">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" id="password2" placeholder="确认密码" required="6位数字">
+                <input type="password" class="form-control" id="password2" placeholder="确认密码" required="">
             </div>
             <div class="form-group">
                 <input type="password" class="form-control" id="wechatId" placeholder="微信号" required="">
@@ -57,7 +57,7 @@
 <script type="text/javascript">
 
     $("#register").click(function () {
-        window.location.href = "/doorManage/user/index";
+        window.location.href = "/";
     })
 
     $("#reload").click(function () {
@@ -65,7 +65,7 @@
     })
 
     $("#return").click(function () {
-        window.location.href = "/doorManage/user/index";
+        window.location.href = "/";
     })
 </script>
 
