@@ -1,7 +1,9 @@
 package com.yyq.doormanage1.controller;
 
 import com.yyq.doormanage1.entity.Room;
+import com.yyq.doormanage1.entity.User;
 import com.yyq.doormanage1.freamwork.Result;
+import com.yyq.doormanage1.freamwork.ResultSupport;
 import com.yyq.doormanage1.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,6 +43,26 @@ public class RoomController {
 		return roomService.queryPage(params, pageSize, pageNum);
 	}
 
+	/**
+	 * 已有门禁列表
+	 */
+	@RequestMapping("/roomOfUser")
+	@ResponseBody
+	public Result roomOfUser(@RequestParam Map<String, Object> params, @RequestParam("pageSize") Integer pageSize,
+					   @RequestParam("pageNum") Integer pageNum) {
+		return roomService.roomOfUser(params, pageSize, pageNum);
+	}
+
+	/**
+	 * 申请列表
+	 */
+	@RequestMapping("/applyList")
+	@ResponseBody
+	public Result applyList(@RequestParam Map<String, Object> params, @RequestParam("pageSize") Integer pageSize,
+							 @RequestParam("pageNum") Integer pageNum) {
+		return roomService.applyList(params, pageSize, pageNum);
+	}
+
 	@RequestMapping("/queryAll")
 	@ResponseBody
 	public Result queryAll() {
@@ -51,6 +73,27 @@ public class RoomController {
 	@ResponseBody
 	public Result queryById(@RequestParam Integer id) {
 		return roomService.queryById(id);
+	}
+
+	@RequestMapping("/queryByUserId")
+	@ResponseBody
+	public Result queryByUserId(@RequestParam("id") Integer id,@RequestParam("pageSize") Integer pageSize,
+								@RequestParam("pageNum") Integer pageNum) {
+		return roomService.queryByUserId(id, pageSize, pageNum);
+	}
+
+	@RequestMapping("/powerAudit")
+	@ResponseBody
+	public Result powerAudit(@RequestParam Map<String, Object> params,@RequestParam("pageSize") Integer pageSize,
+								@RequestParam("pageNum") Integer pageNum) {
+		return roomService.powerAudit(params, pageSize, pageNum);
+	}
+
+	/** 审核 */
+	@RequestMapping("/auth/{status}")
+	@ResponseBody
+	public Result auth(@PathVariable Integer status,@RequestParam("id") Integer id,@RequestParam("userId") Integer userId) {
+		return roomService.auth(status,id,userId);
 	}
 
 	@RequestMapping("/save")
@@ -69,6 +112,12 @@ public class RoomController {
 	@ResponseBody
 	public Result delete(@RequestParam Integer id) {
 		return roomService.delete(id);
+	}
+
+	@RequestMapping("/relieve")
+	@ResponseBody
+	public Result relieve(@RequestParam("userId") Integer userId,@RequestParam("roomId") Integer roomId) {
+		return roomService.relieve(userId,roomId);
 	}
 
 	@RequestMapping("/open")

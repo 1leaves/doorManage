@@ -8,6 +8,11 @@
     <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/animate.css}" rel="stylesheet"/>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
+
+    <link th:href="@{/css/toastr.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/project.css}" rel="stylesheet"/>
+    <link th:href="@{/css/fileinput.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet"/>
 </head>
 <body class="gray-bg">
 
@@ -19,22 +24,32 @@
     </div>
     <div>
         <h2>注册门禁账号</h2>
-        <form class="m-t" role="form" action="#">
+        <form id = "ff" class="m-t" role="form">
             <div class="form-group">
-                <input type="text" class="form-control" id="account" placeholder="账号" required="">
+                <input type="text" class="form-control" name="username" id="username" placeholder="姓名" required="">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" id="password" placeholder="密码" required="">
+                <input type="text" class="form-control" name="account" id="account" placeholder="学号" required="">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" id="password2" placeholder="确认密码" required="">
+                <input type="text" class="form-control" name="password" id="password" placeholder="密码" required="">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" id="wechatId" placeholder="微信号" required="">
+                <input type="text" class="form-control" id="password1" placeholder="确认密码" required="">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" id="stuId" placeholder="学号" required="">
+                <input type="text" class="form-control" name="wechatId" id="wechatId" placeholder="微信号" required="">
             </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="sex" id="sex" placeholder="性别" required="">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="phone" id="phone" placeholder="手机号" required="">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="birthday" id="birthday" placeholder="生日日期" required="">
+            </div>
+
             <div class="form-group form-inline">
                 <button type="button" id="register" class="btn btn-primary m-b">确 认</button>
                 <button type="button" id="reload" class="btn btn-primary m-b">重 置</button>
@@ -50,14 +65,49 @@
 <script th:src="@{/js/plugins/jquery.slimscroll.min.js}"></script>
 <script th:src="@{/js/plugins/layer/layer.min.js}"></script>
 
+<script th:src="@{/js/bootstrap-datetimepicker.js}"></script>
+<script th:src="@{/js/bootstrap-datetimepicker.zh-CN.js}"></script>
 <!-- 自定义js -->
 <script th:src="@{/js/hAdmin.js}"></script>
 <script type="text/javascript" th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.cookie.js}"></script>
+
+<script type="text/javascript" th:src="@{/js/content.js}"></script>
+<script type="text/javascript" th:src="@{/js/toastr.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/fileinput.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/zh.min.js}"></script>
 <script type="text/javascript">
 
+    $("#birthday").datetimepicker({//选择年月日
+        format: 'yyyy-mm-dd',
+        language: 'zh-CN',
+        autoclose: true,
+        todayBtn: true,
+        pickerPosition: "bottom-left"
+    });
+
     $("#register").click(function () {
-        window.location.href = "/";
+        var json = {};
+        $.each($("#ff").serializeArray(), function(i, field) {
+            if(json[field.name]) {
+                json[field.name] += ("," + field.value);
+            } else {
+                json[field.name] = field.value;
+            }
+        });
+
+        json.sex = json.sex=="男"?0:1;
+
+        $.ajax({
+            type: "post",
+            url: url + "/user/regist",
+            contentType: "application/json",
+            data: JSON.stringify(json),
+            success: function(r){
+                alert("注册成功");
+                window.location.href = "/";
+            }
+        });
     })
 
     $("#reload").click(function () {

@@ -34,6 +34,26 @@ public class RoomServiceImpl implements RoomService{
 	}
 
 	@Override
+	public Result roomOfUser(Map<String, Object> params, Integer pageSize, Integer pageNum) {
+		Result result = new ResultSupport();
+		PageHelper.startPage(pageNum, pageSize);
+		List<Room> list = roomMapper.roomOfUser(params);
+		PageInfo<Room> info = new PageInfo<>(list);
+		result.setModel("pageInfo", info);
+		return result;
+	}
+
+	@Override
+	public Result applyList(Map<String, Object> params, Integer pageSize, Integer pageNum) {
+		Result result = new ResultSupport();
+		PageHelper.startPage(pageNum, pageSize);
+		List<Room> list = roomMapper.applyList(params);
+		PageInfo<Room> info = new PageInfo<>(list);
+		result.setModel("pageInfo", info);
+		return result;
+	}
+
+	@Override
 	public Result save(Room room) {
 		Result result = new ResultSupport();
 		try {
@@ -54,7 +74,27 @@ public class RoomServiceImpl implements RoomService{
 		result.setModel("entity", room);
 		return result;
 	}
-	
+
+	@Override
+	public Result queryByUserId(Integer id,Integer pageSize,Integer pageNum) {
+		Result result = new ResultSupport();
+		PageHelper.startPage(pageNum, pageSize);
+		List<Room> list = roomMapper.queryByUserId(id);
+		PageInfo<Room> info = new PageInfo<>(list);
+		result.setModel("pageInfo", info);
+		return result;
+	}
+
+	@Override
+	public Result powerAudit(Map<String, Object> params, Integer pageSize, Integer pageNum) {
+		Result result = new ResultSupport();
+		PageHelper.startPage(pageNum, pageSize);
+		List<Room> list = roomMapper.powerAudit(params);
+		PageInfo<Room> info = new PageInfo<>(list);
+		result.setModel("pageInfo", info);
+		return result;
+	}
+
 	@Override
 	public Result update(Room room) {
 		Result result = new ResultSupport();
@@ -82,6 +122,34 @@ public class RoomServiceImpl implements RoomService{
 		Result result = new ResultSupport();
 		try {
 			int i = roomMapper.delete(id);
+			if(i != 1){
+				result.setSuccess(false);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public Result auth(Integer status, Integer id, Integer userId) {
+		Result result = new ResultSupport();
+		try {
+			int i = roomMapper.auth(status,id,userId);
+			if(i != 1){
+				result.setSuccess(false);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public Result relieve(Integer userId, Integer roomId) {
+		Result result = new ResultSupport();
+		try {
+			int i = roomMapper.relieve(userId,roomId);
 			if(i != 1){
 				result.setSuccess(false);
 			}

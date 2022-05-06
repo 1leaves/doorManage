@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>用户管理列表</title>
+    <title>机房权限申请列表</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
 
@@ -46,7 +46,7 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="form-group col-md-12" style="margin-top: 10px">
-                            <h3 style="margin-right: 10px">用户权限管理列表</h3>
+                            <h3 style="margin-right: 10px">机房权限申请列表</h3>
                             <div class="hr-line-dashed"></div>
                         </div>
                         <div class="col-sm-12">
@@ -66,16 +66,11 @@
                     <table class="table table-hover top-space txt_-center">
                         <thead>
                         <tr>
-                            <th width="5%">序号</th>
-                            <th width="5%">用户名</th>
-                            <th width="15%">账号</th>
-                            <th width="5%">性别</th>
-                            <th width="15%">手机号</th>
-                            <th width="15%">生日</th>
-                            <th width="5%">权限</th>
-                            <th width="5%">状态</th>
-                            <th width="15%">创建时间</th>
-                            <th width="15%">操作</th>
+                            <th width="20%">用户名</th>
+                            <th width="20%">账号</th>
+                            <th width="20%">机房编号</th>
+                            <th width="20%">机房名称</th>
+                            <th width="20%">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -123,7 +118,7 @@
                 $.ajax({
                     type: "get",
                     dataType: "json",
-                    url: url + '/user/queryPage',
+                    url: url + '/room/powerAudit',
                     async: false,
                     data: {
                         pageNum: pageNum,
@@ -133,26 +128,10 @@
                     success: function (result) {
                         if (null != result && "" != result && result.success) {
                             $.each(result.data.pageInfo.list, function (n, value) {
-                                if (value.status=="1"||value.status=="2") {
-                                    var trs = "";
-                                    var stats = "display:none";
-                                    var status = "已审核";
-                                    var type = "用户";
-                                    if (value.status == '1') {
-                                        stats = "";
-                                        status = "未审核";
-                                    }
-                                    if (value.type == '1') {
-                                        type = "管理员";
-                                    }
-                                    if (value.sex == '1') {
-                                        type = "女";
-                                    }
-
-                                    // <button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button>
-                                    trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + sex + '</td><td>' + value.phone + '</td><td>' + value.birthday + '</td><td>' + type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px ;' + stats + '" ><i class="fa fa-paste padding-right5" ></i>审核</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>注销</button></td></tr>'
-                                    $("tbody").append(trs);
-                                }
+                                var trs = "";
+                                // <button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button>
+                                trs += '<tr><td style="word-wrap:break-word;word-break:break-all;" >' + value.userName + '</td><td>' + value.userAccount + '</td><td>' + value.roomCode + '</td><td>' + value.roomName + '</td><td><button class="btn btn-info" type="button" onclick="auth(\''+ value.id +'\',\''+ value.userId + '\')" style="margin-right: 10px ;" ><i class="fa fa-paste padding-right5" ></i>审核</button></td></tr>'
+                                $("tbody").append(trs);
                             })
                             // allcount = result.data.rowCount;
                             // pageSize = result.data.size;
@@ -175,7 +154,7 @@
         $.ajax({
             type: "get",
             dataType: "json",
-            url: url + '/user/queryPage',
+            url: url + '/room/powerAudit',
             async: false,
             data: {
                 pageNum: pageNum,
@@ -185,27 +164,10 @@
             success: function (result) {
                 if (null != result && "" != result && result.success) {
                     $.each(result.data.pageInfo.list, function (n, value) {
-                        if (value.status=="1"||value.status=="2") {
                             var trs = "";
-                            var stats = "";
-                            var status = "未审核";
-                            var type = "用户";
-                            var sex = "男";
-                            if (value.status == '2') {
-                                stats = "display:none";
-                                status = "已审核";
-                            }
-                            if (value.type == '1') {
-                                type = "管理员";
-                            }
-                            if (value.sex == '1') {
-                                type = "女";
-                            }
-
                             // <button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button>
-                            trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + sex + '</td><td>' + value.phone + '</td><td>' + value.birthday + '</td><td>' + type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px ;' + stats + '" ><i class="fa fa-paste padding-right5" ></i>审核</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>注销</button></td></tr>'
+                        trs += '<tr><td style="word-wrap:break-word;word-break:break-all;" >' + value.userName + '</td><td>' + value.userAccount + '</td><td>' + value.roomCode + '</td><td>' + value.roomName + '</td><td><button class="btn btn-info" type="button" onclick="auth(\''+ value.id +'\',\''+ value.userId + '\')" style="margin-right: 10px ;" ><i class="fa fa-paste padding-right5" ></i>审核</button></td></tr>'
                             $("tbody").append(trs);
-                        }
                     })
                     // allcount = result.data.rowCount;
                     // pageNum = result.data.pageNum;
@@ -232,66 +194,70 @@
         }
     });
 
-    function del(id) {
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "/doorManage/user/auth/"+0,
-            data: {
-                id: id
-            },
-            async: false,
-            success: function (result) {
-                if (null != result && "" != result && 0 == result.data.user.status) {
-                    alert("注销成功");
-                    location.reload();
-                } else {
-                    alert("注销失败");
-                    location.reload();
-                }
-            },
-            error: function (result) {
-                alert("注销失败");
-                location.reload();
-            }
-        });
-    }
+    // function del(id) {
+    //     $.ajax({
+    //         type: "post",
+    //         dataType: "json",
+    //         url: "/doorManage/user/auth/"+0,
+    //         data: {
+    //             id: id
+    //         },
+    //         async: false,
+    //         success: function (result) {
+    //             if (null != result && "" != result && 0 == result.data.user.status) {
+    //                 alert("注销成功");
+    //                 location.reload();
+    //             } else {
+    //                 alert("注销失败");
+    //                 location.reload();
+    //             }
+    //         },
+    //         error: function (result) {
+    //             alert("注销失败");
+    //             location.reload();
+    //         }
+    //     });
+    // }
 
-    function auth(id) {
+    function auth(id,userId) {
+        console.log(id);
+        console.log(userId);
         if(confirm("是否审核通过")){
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "/doorManage/user/auth/"+2,
-            data: {
-                id: id
-            },
-            async: false,
-            success: function (result) {
-                if (null != result && "" != result && 2 == result.data.user.status) {
-                    alert("审核成功");
-                    location.reload();
-                } else {
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/doorManage/room/auth/"+0,
+                data: {
+                    id: id,
+                    userId:userId
+                },
+                async: false,
+                success: function (result) {
+                    if (null != result && "" != result) {
+                        alert("审核成功");
+                        location.reload();
+                    } else {
+                        alert("审核错误");
+                        location.reload();
+                    }
+                },
+                error: function (result) {
                     alert("审核错误");
                     location.reload();
                 }
-            },
-            error: function (result) {
-                alert("审核错误");
-                location.reload();
-            }
-        });
+            });
         }else {
             $.ajax({
                 type: "post",
                 dataType: "json",
-                url: "/doorManage/user/auth/"+3,
+                url: "/doorManage/room/auth/"+3,
                 data: {
-                    id: id
+                    id: id,
+                    userId:userId
                 },
                 async: false,
                 success: function (result) {
-                    if (null != result && "" != result && 3 == result.data.user.status) {
+                    if (null != result && "" != result) {
                         alert("审核成功");
                         location.reload();
                     } else {

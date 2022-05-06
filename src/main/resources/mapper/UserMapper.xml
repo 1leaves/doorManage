@@ -29,6 +29,9 @@
 		account,
 		username,
 		password,
+		sex,
+		birthday,
+		phone,
 		type,
 		status,
 		token,
@@ -39,10 +42,13 @@
 		#{account},
 		#{username},
 		#{password},
+		#{sex},
+		#{birthday},
+		#{phone},
 		2,
-		3,
+		1,
 		#{token},
-		#{_parameter},
+		#{wechatId},
 		SYSDATE(),
 		SYSDATE()
 		)
@@ -55,7 +61,7 @@
 		<where>
 			1 = 1
 			<if test="params.username != null and params.username != ''">
-				and username like concat('%',${params.username},'%')
+				and username like concat('%',#{params.username},'%')
 			</if>
 			<if test="params.status != null">
 				and status =  ${params.status}
@@ -68,7 +74,7 @@
 		<include refid="select" />
 		from dm_user
 		<where>
-			account = #{account} and password = #{password} and status = 2
+			account = #{account} and password = #{password}
 		</where>
 	</select>
 	
@@ -85,7 +91,33 @@
 			wechat_id = #{wechatId}
 		</where>
 	</select>
-	
-	
+
+	<update id="update" parameterType="com.yyq.doormanage1.entity.User" >
+		update dm_user
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="account != null">account=#{account},</if>
+			<if test="username != null">username=#{username},</if>
+			<if test="password != null">password=#{password},</if>
+			<if test="sex != null">sex=#{sex},</if>
+			<if test="birthday != null">birthday=#{birthday},</if>
+			<if test="phone != null">phone=#{phone},</if>
+			<if test="status != null">status=#{status},</if>
+			<if test="wechatId != null">wechat_id=#{wechatId},</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<insert id="apply" >
+		INSERT INTO dm_user_room
+		(
+		user_id,
+		room_id,
+		activate
+		) VALUES (
+		#{userId},
+		#{roomId},
+		1
+		)
+	</insert>
 
 </mapper>

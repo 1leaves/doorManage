@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>用户权限管理列表</title>
+    <title>用户管理列表</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
 
@@ -66,13 +66,14 @@
                     <table class="table table-hover top-space txt_-center">
                         <thead>
                         <tr>
-                            <th width="10% ">序号</th>
-                            <th width="10%">用户名</th>
+                            <th width="5%">序号</th>
+                            <th width="5%">用户名</th>
                             <th width="15%">账号</th>
-                            <th width="10%">权限</th>
-                            <th width="10%">状态</th>
-                            <th width="20%">创建时间</th>
-                            <th width="25%">操作</th>
+                            <th width="5%">性别</th>
+                            <th width="15%">手机号</th>
+                            <th width="15%">生日</th>
+                            <th width="15%">创建时间</th>
+                            <th width="15%">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -130,15 +131,17 @@
                     success: function (result) {
                         if (null != result && "" != result && result.success) {
                             $.each(result.data.pageInfo.list, function (n, value) {
-                                var trs = "";
-                                var stats = "";
-                                var status = "未审核";
-                                if (value.status == '2') {
-                                    stats = "disabled";
-                                    status = "已审核";
+                                if (value.status=="2"&&value.type == '2') {
+                                    var trs = "";
+                                    var sex = "男";
+                                    if (value.sex == '1') {
+                                        sex = "女";
+                                    }
+
+                                    // <button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button>
+                                    trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + sex + '</td><td>' + value.phone + '</td><td>' + value.birthday + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info margin-left10" type="button" onclick="dm(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>查看已审核的门禁权限</button></td></tr>'
+                                    $("tbody").append(trs);
                                 }
-                                trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + value.type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px" ' + stats + ' ><i class="fa fa-paste padding-right5" ></i>审核</button><button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>注销</button></td></tr>'
-                                $("tbody").append(trs);
                             })
                             // allcount = result.data.rowCount;
                             // pageSize = result.data.size;
@@ -171,19 +174,24 @@
             success: function (result) {
                 if (null != result && "" != result && result.success) {
                     $.each(result.data.pageInfo.list, function (n, value) {
-                        var trs = "";
-                        var stats = "";
-                        var status = "未审核";
-                        if (value.status == '2') {
-                            stats = "disabled";
-                            status = "已审核";
+                        if (value.status=="2"&&value.type == '2') {
+                            var trs = "";
+                            var sex = "用户";
+                            if (value.sex == '1') {
+                                sex = "女";
+                            }
+
+                            // <button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button>
+                            trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + sex + '</td><td>' + value.phone + '</td><td>' + value.birthday + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info margin-left10" type="button" onclick="dm(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>查看已审核的门禁权限</button></td></tr>'
+                            $("tbody").append(trs);
                         }
-                        trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + value.type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px" ' + stats + ' ><i class="fa fa-paste padding-right5" ></i>审核</button><button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>注销</button></td></tr>'
-                        $("tbody").append(trs);
                     })
-                    allcount = result.data.rowCount;
-                    pageNum = result.data.pageNum;
-                    pageSize = result.data.size;
+                    // allcount = result.data.rowCount;
+                    // pageNum = result.data.pageNum;
+                    // pageSize = result.data.size;
+                    allcount = result.data.pageInfo.total;
+                    pageNum = result.data.pageInfo.pageNum;
+                    pageSize = result.data.pageInfo.pageSize;
                     callBackPagination();
                 } else {
                     alert(result.msg);
@@ -195,61 +203,71 @@
     $("#search").click(function () {
         var name = $("#name").val();
         if (null != $.trim(name) && "" != $.trim(name)) {
-            search(1);
+            search();
             $("#name").val(name);
         } else {
-            search(1);
+            search();
             $("#name").val("");
         }
     });
 
-    function del(id) {
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "/doorManage/user/delete",
-            data: {
-                id: id
-            },
-            async: false,
-            success: function (result) {
-                if (null != result && "" != result && 0 == result.status) {
-                    toast("删除成功", "删除成功", "success");
-                } else {
-                    alert(result.msg);
-                }
-            },
-            error: function (result) {
-                toast("删除失败", "删除失败", "error");
-            }
-        });
+    function dm(id) {
+        location.href = "/doorManage/room/user_room?id=" + id;
     }
 
     function auth(id) {
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "/doorManage/user/auth",
-            data: {
-                id: id
-            },
-            async: false,
-            success: function (result) {
-                if (null != result && "" != result && 0 == result.status) {
-                    toast("审核成功", "审核成功", "success");
-                } else {
-                    alert(result.msg);
+        if(confirm("是否审核通过")){
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/doorManage/user/auth/"+2,
+                data: {
+                    id: id
+                },
+                async: false,
+                success: function (result) {
+                    if (null != result && "" != result && 2 == result.data.user.status) {
+                        alert("审核成功");
+                        location.reload();
+                    } else {
+                        alert("审核错误");
+                        location.reload();
+                    }
+                },
+                error: function (result) {
+                    alert("审核错误");
+                    location.reload();
                 }
-            },
-            error: function (result) {
-                toast("审核失败", "审核失败", "error");
-            }
-        });
+            });
+        }else {
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/doorManage/user/auth/"+3,
+                data: {
+                    id: id
+                },
+                async: false,
+                success: function (result) {
+                    if (null != result && "" != result && 3 == result.data.user.status) {
+                        alert("审核成功");
+                        location.reload();
+                    } else {
+                        alert("审核错误");
+                        location.reload();
+                    }
+                },
+                error: function (result) {
+                    alert("审核错误");
+                    location.reload();
+                }
+            });
+        }
     }
 
-    function edit(id) {
-        location.href = "/electric/user/user_update?id=" + id;
-    }
+    // function edit(id) {
+    //     location.href = "/doorManage/user/user_update?id=" + id;
+    // }
 
 </script>
 

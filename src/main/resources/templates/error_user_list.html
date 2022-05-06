@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>用户管理列表</title>
+    <title>异常用户管理列表</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
 
@@ -133,14 +133,13 @@
                     success: function (result) {
                         if (null != result && "" != result && result.success) {
                             $.each(result.data.pageInfo.list, function (n, value) {
-                                if (value.status=="1"||value.status=="2") {
+                                if (value.status=="0"||value.status=="3") {
                                     var trs = "";
-                                    var stats = "display:none";
-                                    var status = "已审核";
+                                    var status = "注销";
                                     var type = "用户";
-                                    if (value.status == '1') {
-                                        stats = "";
-                                        status = "未审核";
+                                    var sex = "男";
+                                    if (value.status == '3') {
+                                        status = "审核不通过";
                                     }
                                     if (value.type == '1') {
                                         type = "管理员";
@@ -150,7 +149,7 @@
                                     }
 
                                     // <button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button>
-                                    trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + sex + '</td><td>' + value.phone + '</td><td>' + value.birthday + '</td><td>' + type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px ;' + stats + '" ><i class="fa fa-paste padding-right5" ></i>审核</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>注销</button></td></tr>'
+                                    trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + sex + '</td><td>' + value.phone + '</td><td>' + value.birthday + '</td><td>' + type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px ;" ><i class="fa fa-paste padding-right5" ></i>恢复正常使用</button></td></tr>'
                                     $("tbody").append(trs);
                                 }
                             })
@@ -185,15 +184,13 @@
             success: function (result) {
                 if (null != result && "" != result && result.success) {
                     $.each(result.data.pageInfo.list, function (n, value) {
-                        if (value.status=="1"||value.status=="2") {
+                        if (value.status=="0"||value.status=="3") {
                             var trs = "";
-                            var stats = "";
-                            var status = "未审核";
+                            var status = "注销";
                             var type = "用户";
                             var sex = "男";
-                            if (value.status == '2') {
-                                stats = "display:none";
-                                status = "已审核";
+                            if (value.status == '3') {
+                                status = "审核不通过";
                             }
                             if (value.type == '1') {
                                 type = "管理员";
@@ -203,7 +200,7 @@
                             }
 
                             // <button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button>
-                            trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + sex + '</td><td>' + value.phone + '</td><td>' + value.birthday + '</td><td>' + type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px ;' + stats + '" ><i class="fa fa-paste padding-right5" ></i>审核</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>注销</button></td></tr>'
+                            trs += '<tr><td>' + value.id + '</td><td style="word-wrap:break-word;word-break:break-all;" >' + value.username + '</td><td>' + value.account + '</td><td>' + sex + '</td><td>' + value.phone + '</td><td>' + value.birthday + '</td><td>' + type + '</td><td>' + status + '</td><td>' + value.createDate + '</td><td><button class="btn btn-info" type="button" onclick="auth(&quot;' + value.id + '&quot;)" style="margin-right: 10px ;" ><i class="fa fa-paste padding-right5" ></i>恢复正常使用</button></td></tr>'
                             $("tbody").append(trs);
                         }
                     })
@@ -232,79 +229,29 @@
         }
     });
 
-    function del(id) {
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "/doorManage/user/auth/"+0,
-            data: {
-                id: id
-            },
-            async: false,
-            success: function (result) {
-                if (null != result && "" != result && 0 == result.data.user.status) {
-                    alert("注销成功");
-                    location.reload();
-                } else {
-                    alert("注销失败");
-                    location.reload();
-                }
-            },
-            error: function (result) {
-                alert("注销失败");
-                location.reload();
-            }
-        });
-    }
-
     function auth(id) {
-        if(confirm("是否审核通过")){
-        $.ajax({
-            type: "post",
-            dataType: "json",
-            url: "/doorManage/user/auth/"+2,
-            data: {
-                id: id
-            },
-            async: false,
-            success: function (result) {
-                if (null != result && "" != result && 2 == result.data.user.status) {
-                    alert("审核成功");
-                    location.reload();
-                } else {
-                    alert("审核错误");
-                    location.reload();
-                }
-            },
-            error: function (result) {
-                alert("审核错误");
-                location.reload();
-            }
-        });
-        }else {
             $.ajax({
                 type: "post",
                 dataType: "json",
-                url: "/doorManage/user/auth/"+3,
+                url: "/doorManage/user/auth/"+2,
                 data: {
                     id: id
                 },
                 async: false,
                 success: function (result) {
-                    if (null != result && "" != result && 3 == result.data.user.status) {
-                        alert("审核成功");
+                    if (null != result && "" != result && 2 == result.data.user.status) {
+                        alert("恢复成功");
                         location.reload();
                     } else {
-                        alert("审核错误");
+                        alert("恢复失败");
                         location.reload();
                     }
                 },
                 error: function (result) {
-                    alert("审核错误");
+                    alert("恢复失败");
                     location.reload();
                 }
             });
-        }
     }
 
     // function edit(id) {

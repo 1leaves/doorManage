@@ -9,6 +9,8 @@ public interface UserService {
 
     Result queryPage(Map<String, Object> params, Integer pageSize, Integer pageNum);
 
+    User queryById(Integer id);
+
     Result login(String account,String password);
     
     Result regist(User user);
@@ -16,5 +18,9 @@ public interface UserService {
     Result save(User user);
     
     Result queryByWechatId(String wechatId);
+
+    int update(User user);
+
+    Result apply(Integer userId, Integer roomId);
 }
 

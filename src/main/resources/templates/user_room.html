@@ -6,18 +6,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>机房列表</title>
+    <title>修改机房</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-<!--    <link href="css/bootstrap.min.css" rel="stylesheet">-->
-<!--    <link href="css/font-awesome.css" rel="stylesheet">-->
-<!--    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">-->
-<!--    <link href="css/animate.css" rel="stylesheet">-->
-<!--    <link href="css/style.css" rel="stylesheet">-->
-<!--    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">-->
-<!--    <link href="css/project.css" rel="stylesheet">-->
-<!--    <link href="css/fileinput.min.css" rel="stylesheet">-->
+    <!--    <link href="css/bootstrap.min.css" rel="stylesheet">-->
+    <!--    <link href="css/font-awesome.css" rel="stylesheet">-->
+    <!--    <link href="css/animate.css" rel="stylesheet">-->
+    <!--    <link href="css/style.css" rel="stylesheet">-->
+    <!--    <link href="css/toastr.min.css" rel="stylesheet">-->
+    <!--    <link href="css/project.css" rel="stylesheet">-->
+    <!--    <link href="css/fileinput.min.css" rel="stylesheet">-->
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/font-awesome.css}" rel="stylesheet"/>
     <link th:href="@{/css/animate.css}" rel="stylesheet"/>
@@ -25,28 +24,24 @@
     <link th:href="@{/css/toastr.min.css}" rel="stylesheet"/>
     <link th:href="@{/css/project.css}" rel="stylesheet"/>
     <link th:href="@{/css/fileinput.min.css}" rel="stylesheet"/>
-    <link th:href="@{/css/plugins/toastr/toastr.min.css}" rel="stylesheet"/>
-    <link th:href="@{/css/plugins/datapicker/datepicker3.css}" rel="stylesheet"/>
 
-<!--    <link rel="stylesheet" href="css/plugins/datapicker/datepicker3.css">-->
-<!--    <script src="js/jquery.min.js"></script>-->
-<!--    <script src="js/bootstrap.min.js"></script>-->
+    <!--    <script src="js/jquery.min.js"></script>-->
+    <!--    <script src="js/bootstrap.min.js"></script>-->
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
 
     <!-- 自定义js -->
-<!--    <script src="js/content.js"></script>-->
-<!--    <script src="js/toastr.min.js"></script>-->
-<!--    <script type="text/javascript" charset="utf-8" src="js/extendPagination.js"></script>-->
-<!--    <script type="text/javascript" src="js/jquery.cookie.js"></script>-->
-<!--    <script type="text/javascript" src="js/bootstrap-datepicker.js"></script>-->
+    <!--    <script type="text/javascript" src="js/content.js"></script>-->
+    <!--    <script type="text/javascript" src="js/toastr.min.js"></script>-->
+    <!--    <script type="text/javascript" src="js/jquery.cookie.js"></script>-->
+    <!--    <script type="text/javascript" src="js/fileinput.min.js"></script>-->
+    <!--    <script type="text/javascript" src="js/zh.min.js"></script>-->
     <script type="text/javascript" th:src="@{/js/content.js}"></script>
     <script type="text/javascript" th:src="@{/js/toastr.min.js}"></script>
     <script type="text/javascript" th:src="@{/js/jquery.cookie.js}"></script>
+    <script type="text/javascript" th:src="@{/js/fileinput.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/zh.min.js}"></script>
     <script type="text/javascript"  charset="utf-8" th:src="@{/js/extendPagination.js}"></script>
-    <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.js}"></script>
-
-
 </head>
 
 <body class="gray-bg">
@@ -56,8 +51,20 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <div class="row">
+                        <div class="form-group col-md-12" style="margin-top: 10px;">
+                            <h3 style="margin-right: 10px">用户信息</h3>
+                            <div>
+                            <label class="control-label" style="display: contents;">用户名:</label>
+                            <label id="username" class="control-label" style="width: 15%"></label>
+                            </div>
+                            <div>
+                            <label class="control-label" style="display: contents;">账 号:</label>
+                            <label id="account" class="control-label" style="width: 15%"></label>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                        </div>
                         <div class="form-group col-md-12" style="margin-top: 10px">
-                            <h3 style="margin-right: 10px">机房列表</h3>
+                            <h3 style="margin-right: 10px">用户已审核机房列表</h3>
                             <div class="hr-line-dashed"></div>
                         </div>
                         <div class="col-sm-12">
@@ -71,7 +78,7 @@
                                 <div class="form-group col-sm-3">
                                     <button class="btn btn-primary " type="button" id="search"
                                             style="margin-right: 20px"><strong>搜 索</strong></button>
-                                    <button class="btn btn-primary " type="button" id="add"><strong>添加</strong></button>
+                                    <button class="btn btn-primary " type="button" id="return"><strong>返回</strong></button>
                                 </div>
                             </form>
                         </div>
@@ -102,11 +109,36 @@
     </div>
 </div>
 
-<script>
-    var user = JSON.parse($.cookie("user"));
+
+<script type="text/javascript">
     var pageNum = 1;
     var pageSize = 10;
     var allcount;
+    var user = JSON.parse($.cookie("user"));
+    var id = getQueryString("id");
+    $(function () {
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: "/doorManage/user/queryById",
+            async: false,
+            contentType: 'application/json',
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (null != result && "" != result && result.success) {
+                    $("#account").text(result.data.entity.account);
+                    $("#username").text(result.data.entity.username);
+                } else {
+                    alert(result.msg);
+                }
+            },
+            error: function (result) {
+                toast("查询失败", "查询失败", "error");
+            }
+        })
+    })
 
     $(function () {
         var $toastlast;
@@ -132,12 +164,12 @@
                 $.ajax({
                     type: "get",
                     dataType: "json",
-                    url: url + '/room/queryPage',
+                    url: url + '/room/queryByUserId',
                     async: false,
                     data: {
                         pageNum: pageNum,
                         pageSize: pageSize,
-                        name: name
+                        id: id
                     },
                     success: function (result) {
                         if (null != result && "" != result && result.success) {
@@ -147,7 +179,7 @@
                                 if (value.status==1){
                                     status = "不可用"
                                 }
-                                trs += '<tr><td>' + value.id + '</td><td>' +value.roomCode+ '</td><td>' + value.roomName + '</td><td>' + value.roomPrincipal + '</td><td>' + status + '</td><td><button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>删除</button></td></tr>'
+                                trs += '<tr><td>' + value.id + '</td><td>' +value.roomCode+ '</td><td>' + value.roomName + '</td><td>' + value.roomPrincipal + '</td><td>' + status + '</td><td><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>删除</button></td></tr>'
                                 $("tbody").append(trs);
                             })
                             allcount = result.data.pageInfo.total;
@@ -169,12 +201,12 @@
         $.ajax({
             type: "get",
             dataType: "json",
-            url: url + '/room/queryPage',
+            url: url + '/room/queryByUserId',
             async: false,
             data: {
                 pageNum: num,
                 pageSize: pageSize,
-                name: name
+                id: id
             },
             success: function (result) {
                 if (null != result && "" != result && result.success) {
@@ -184,7 +216,7 @@
                         if (value.status==1){
                             status = "不可用"
                         }
-                        trs += '<tr><td>' + value.id + '</td><td>' +value.roomCode+ '</td><td>' + value.roomName + '</td><td>' + value.roomPrincipal + '</td><td>' + status + '</td><td><button class="btn btn-success" type="button" onclick="edit(&quot;' + value.id + '&quot;)" ><i class="fa fa-edit" ></i>修改</button><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>删除</button></td></tr>'
+                        trs += '<tr><td>' + value.id + '</td><td>' +value.roomCode+ '</td><td>' + value.roomName + '</td><td>' + value.roomPrincipal + '</td><td>' + status + '</td><td><button class="btn btn-danger margin-left10" type="button" onclick="del(&quot;' + value.id + '&quot;)" ><i class="fa fa-eraser" ></i>删除</button></td></tr>'
                         $("tbody").append(trs);
                     })
                     allcount = result.data.pageInfo.total;
@@ -202,23 +234,20 @@
         search(1);
     });
 
-    $("#add").click(function () {
-        location.href = "/doorManage/room/room_add";
-    })
+    // function edit(id) {
+    //     location.href = "/doorManage/room/room_edit?id=" + id;
+    // }
 
-    function edit(id) {
-        location.href = "/doorManage/room/room_edit?id=" + id;
-    }
-
-    function del(id) {
+    function del(roomId) {
         $.ajax({
             type: "get",
             dataType: "json",
-            url: "/doorManage/room/delete",
+            url: "/doorManage/room/relieve",
             async: false,
             contentType: 'application/json',
             data: {
-                id: id
+                userId: id,
+                roomId: roomId
             },
             success: function (result) {
                 if (null != result && "" != result && result.success) {
@@ -236,6 +265,9 @@
         })
     }
 
+    $("#return").click(function () {
+        self.location = document.referrer;
+    });
 </script>
 
 </body>

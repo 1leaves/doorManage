@@ -37,6 +37,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public User queryById(Integer id) {
+		User user = userMapper.queryById(id);
+		return user;
+	}
+
+	@Override
 	public Result login(String account, String password) {
 		Result result = new ResultSupport();
 		User user = userMapper.login(account, password);
@@ -94,6 +100,21 @@ public class UserServiceImpl implements UserService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public int update(User user) {
+		return userMapper.update(user);
+	}
+
+	@Override
+	public Result apply(Integer userId, Integer roomId) {
+		Result result = new ResultSupport();
+		int i = userMapper.apply(userId,roomId);
+		if(i != 1){
+			result.setError("400", "保存异常");
 		}
 		return result;
 	}

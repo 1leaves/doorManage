@@ -71,17 +71,23 @@
                 success: function (result) {
                     if (null != result && "" != result && result.success) {
                         $.cookie("user", JSON.stringify(result.data.user), {expires: 1, path: '/'});
-                        if(result.data.user.type==1){
-                            window.location.href = "/doorManage/user/main1";
-                        }else if (result.data.user.type==2){
-                            window.location.href = "/doorManage/user/main2";
+                        if (result.data.user.status==2) {
+                            if (result.data.user.type == 1) {
+                                window.location.href = "/doorManage/user/main1";
+                            } else if (result.data.user.type == 2) {
+                                window.location.href = "/doorManage/user/main2";
+                            }
+                        }else {
+                            if (result.data.user.status==0)alert("账号已被注销");
+                            if (result.data.user.status==1)alert("账号未审核");
+                            if (result.data.user.status==3)alert("账号审核未通过");
                         }
                     } else {
-                        alert("登录出错");
+                        alert("输入账号密码有误");
                     }
                 },
                 error: function (XMLHttpRequest) {
-                    alert("登录出错");
+                    alert("输入账号密码有误");
                 }
             });
 

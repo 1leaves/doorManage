@@ -20,4 +20,16 @@ public interface RoomService {
 	Result delete(Integer id);
 	
 	Result open(String token,String roomCode);
+
+    Result queryByUserId(Integer id,Integer pageSize,Integer pageNum);
+
+    Result relieve(Integer userId, Integer roomId);
+
+    Result powerAudit(Map<String, Object> params, Integer pageSize, Integer pageNum);
+
+	Result auth(Integer status, Integer id, Integer userId);
+
+    Result roomOfUser(Map<String, Object> params, Integer pageSize, Integer pageNum);
+
+    Result applyList(Map<String, Object> params, Integer pageSize, Integer pageNum);
 }

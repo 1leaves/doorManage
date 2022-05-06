@@ -22,5 +22,16 @@ public interface RoomMapper {
 	Room queryById(@Param("id")Integer id);
 	
 	List<Room> queryAll();
-	
+
+    List<Room> queryByUserId(Integer id);
+
+    int relieve(Integer userId, Integer roomId);
+
+	List<Room> powerAudit(@Param("params")Map<String, Object> params);
+
+	int auth(Integer status, Integer id, Integer userId);
+
+    List<Room> roomOfUser(@Param("params")Map<String, Object> params);
+
+    List<Room> applyList(@Param("params")Map<String, Object> params);
 }

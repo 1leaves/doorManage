@@ -61,15 +61,21 @@
                                         <div class="hr-line-dashed"></div>
                                     </div>
                                     <div class="form-group" style="margin-top: 10px">
-                                        <label for="name" class="col-md-2 control-label">名称*</label>
+                                        <label for="name" class="col-md-2 control-label">实验室编号</label>
                                         <div class="col-md-9">
-                                            <input class="form-control" type="text" placeholder="请输入名称" id="name">
+                                            <input class="form-control" type="text" placeholder="请输入实验室编号" id="code">
                                         </div>
                                     </div>
                                     <div class="form-group" style="margin-top: 10px">
-                                        <label for="name" class="col-md-2 control-label">设备号*</label>
+                                        <label for="name" class="col-md-2 control-label">实验室名称</label>
                                         <div class="col-md-9">
-                                            <input class="form-control" type="text" placeholder="请输入设备号" id="code">
+                                            <input class="form-control" type="text" placeholder="请输入实验室名称" id="name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-top: 10px">
+                                        <label for="name" class="col-md-2 control-label">实验室负责人</label>
+                                        <div class="col-md-9">
+                                            <input class="form-control" type="text" placeholder="请输入负责人名称" id="principal">
                                         </div>
                                     </div>
                                     <div class="col-md-11">
@@ -100,6 +106,7 @@
         if (!$("#save").hasClass("disabled")) {
             var name = $("#name").val();
             var code = $("#code").val();
+            var principal = $("#principal").val();
             $.ajax({
                 type: "post",
                 dataType: "json",
@@ -108,12 +115,13 @@
                 contentType: 'application/json',
                 data: JSON.stringify({
                     roomName: name,
-                    roomCode: code
+                    roomCode: code,
+                    roomPrincipal: principal
                 }),
                 success: function (result) {
                     if (null != result && "" != result && result.success) {
-                        toast("添加成功", "添加成功", "success");
-                        $("#save").addClass("disabled");
+                        alert("添加成功");
+                        self.location = document.referrer;
                     } else {
                         alert(result.msg);
                     }

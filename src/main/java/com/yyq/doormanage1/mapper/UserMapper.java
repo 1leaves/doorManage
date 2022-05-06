@@ -18,4 +18,10 @@ public interface UserMapper {
 	List<User> queryByParams(@Param("params")Map<String,Object> params);
 	
 	User queryByWechatId(@Param("wechatId")String wechatId);
+
+	User queryById(@Param("id")Integer id);
+
+	int update(User user);
+
+    int apply(@Param("userId")Integer userId, @Param("roomId")Integer roomId);
 }

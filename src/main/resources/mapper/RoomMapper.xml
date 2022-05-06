@@ -8,16 +8,18 @@
 		(
 		room_name,
 		room_code,
+		room_principal,
 		status
 		) VALUES (
 		#{roomName},
 		#{roomCode},
+		#{roomPrincipal},
 		2
 		)
 	</insert>
 
 	<select id="queryByParams" parameterType="map" resultType="com.yyq.doormanage1.entity.Room">
-		SELECT id id,room_name roomName,room_code roomCode,status status FROM dm_room
+		SELECT id id,room_name roomName,room_code roomCode,room_principal roomPrincipal,status status FROM dm_room
 		<where>
 			1 = 1
 			<if test="params.name != null and params.name != ''">
@@ -26,11 +28,79 @@
 			<if test="params.code != null and params.code != ''">
 				and room_code like concat('%',#{params.code},'%')
 			</if>
+			<if test="params.principal != null and params.principal != ''">
+				and room_principal like concat('%',#{params.principal},'%')
+			</if>
+			<if test="params.userId != null and params.userId != ''">
+				and id not in(select room_id from dm_user_room where user_id = #{params.userId})
+			</if>
+		</where>
+		order by id,status
+	</select>
+
+	<select id="roomOfUser" parameterType="map" resultType="com.yyq.doormanage1.entity.Room">
+		SELECT id id,room_name roomName,room_code roomCode,room_principal roomPrincipal,status status FROM dm_room
+		<where>
+			1 = 1
+			<if test="params.name != null and params.name != ''">
+				and room_name like concat('%',#{params.name},'%')
+			</if>
+			<if test="params.code != null and params.code != ''">
+				and room_code like concat('%',#{params.code},'%')
+			</if>
+			<if test="params.principal != null and params.principal != ''">
+				and room_principal like concat('%',#{params.principal},'%')
+			</if>
+			<if test="params.userId != null and params.userId != ''">
+				and id in(select room_id from dm_user_room where user_id = #{params.userId} and activate = 1)
+			</if>
+		</where>
+		order by id,status
+	</select>
+
+	<select id="applyList" parameterType="map" resultType="com.yyq.doormanage1.entity.Room">
+		SELECT r.id id,room_name roomName,room_code roomCode,room_principal roomPrincipal,status status,activate
+		FROM dm_room r,dm_user_room u
+		<where>
+			1 = 1
+			<if test="params.name != null and params.name != ''">
+				and room_name like concat('%',#{params.name},'%')
+			</if>
+			<if test="params.code != null and params.code != ''">
+				and room_code like concat('%',#{params.code},'%')
+			</if>
+			<if test="params.principal != null and params.principal != ''">
+				and room_principal like concat('%',#{params.principal},'%')
+			</if>
+			<if test="params.userId != null and params.userId != ''">
+				and r.id in(select room_id from dm_user_room where user_id = #{params.userId})
+			</if>
+			and r.id = u.room_id
+		</where>
+		order by activate desc ,r.id
+	</select>
+
+	<select id="queryByUserId" resultType="com.yyq.doormanage1.entity.Room">
+		SELECT id id,room_name roomName,room_code roomCode,room_principal roomPrincipal,status status FROM dm_room
+		<where>
+			1 = 1
+			and id in (select room_id from dm_user_room where user_id = #{id} and activate = 0)
+		</where>
+		order by id,status
+	</select>
+
+	<select id="powerAudit" resultType="com.yyq.doormanage1.entity.Room">
+		SELECT r.id id,room_name roomName,room_code roomCode,u.id userId,username userName,account userAccount
+		FROM dm_room r,dm_user u
+		<where>
+			1 = 1
+			and r.id in(select room_id from dm_user_room where activate = 1)
+			and u.id in(select user_id from dm_user_room where activate = 1)
 		</where>
 	</select>
-	
+
 	<select id="queryById" resultType="com.yyq.doormanage1.entity.Room">
-		SELECT id id,room_name roomName,room_code roomCode,status status FROM dm_room
+		SELECT id id,room_name roomName,room_code roomCode,room_principal roomPrincipal,status status FROM dm_room
 		<where>
 			id = #{id}
 		</where>
@@ -41,14 +111,37 @@
 		<set>
 			room_name = #{roomName},
 			room_code = #{roomCode},
+			room_principal = #{roomPrincipal},
 		</set>
 		<where>
 			id = #{id}
 		</where>
 	</update>
-	
+
+	<update id="auth">
+		update dm_user_room
+		<set>
+			activate = #{status}
+		</set>
+		<where>
+			room_id = #{id}
+			and user_id = #{userId}
+		</where>
+	</update>
+
+	<update id="relieve">
+		update dm_user_room
+		<set>
+			activate = 3
+		</set>
+		<where>
+			user_id = #{userId}
+			and room_id = #{roomId}
+		</where>
+	</update>
+
 	<select id="queryAll" resultType="com.yyq.doormanage1.entity.Room" >
-		SELECT id id,room_name roomName,room_code roomCode,status status FROM dm_room
+		SELECT id id,room_name roomName,room_code roomCode,room_principal,status status FROM dm_room
 	</select>
 
 	<delete id="delete">

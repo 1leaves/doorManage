@@ -29,7 +29,7 @@
                                 <span class="clear">
                                     <span class="block m-t-xs" style="font-size:20px;">
                                         <!--<i class="fa fa-area-chart"></i>-->
-                                        <strong class="font-bold">智能门禁管理系统</strong>
+                                        <strong class="font-bold">智能门禁管理系统——用户端</strong>
                                     </span>
                                 </span>
                         </a>
@@ -43,7 +43,7 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem" href="/doorManage/room/room_list">个人信息</a>
+                            <a class="J_menuItem" href="/doorManage/user/information">个人信息</a>
                         </li>
                     </ul>
                 </li>
@@ -55,31 +55,13 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem role" href="/doorManage/user/user_list">机房列表</a>
+                            <a class="J_menuItem role" href="/doorManage/user/roomOfUser">可用门禁</a>
                         </li>
-                    </ul>
-                </li>
-                <li class="msg" id="manage">
-                    <a href="#">
-                        <i class="fa fa fa-bar-chart-o"></i>
-                        <span class="nav-label">申请列表</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem role" href="/doorManage/user/user_list">申请列表</a>
+                            <a class="J_menuItem role" href="/doorManage/user/room_listU">其他机房</a>
                         </li>
-                    </ul>
-                </li>
-                <li class="msg">
-                    <a href="#">
-                        <i class="fa fa fa-bar-chart-o"></i>
-                        <span class="nav-label">可用门禁</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem role" href="/doorManage/user/user_list">可用门禁</a>
+                            <a class="J_menuItem role" href="/doorManage/user/applyList">申请列表</a>
                         </li>
                     </ul>
                 </li>
@@ -91,7 +73,7 @@
                     </a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a class="J_menuItem role" href="/doorManage/user/user_list">访问记录</a>
+                            <a class="J_menuItem role" href="/doorManage/user/user_record">访问记录</a>
                         </li>
                     </ul>
                 </li>
@@ -146,30 +128,30 @@
 <script type="text/javascript" th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:src="@{/js/jquery.cookie.js}"></script>
 
-<!--<script>-->
-<!--    $(document).ready(function () {-->
-<!--        var user = JSON.parse($.cookie("user"));-->
-<!--        if (null == user || null == user.username) {-->
-<!--            window.location.href = "/doorManage";-->
-<!--        } else {-->
-<!--            $("#username").text(user.username);-->
-<!--        }-->
+<script>
+    // $(document).ready(function () {
+    //     var user = JSON.parse($.cookie("user"));
+    //     if (null == user || null == user.username) {
+    //         window.location.href = "/doorManage";
+    //     } else {
+    //         $("#username").text(user.username);
+    //     }
+    //
+    //     if (user.id == 1) {
+    //         $("#role").attr("href", "/doorManage/user/role_msg");
+    //     } else {
+    //         $(".role").hide();
+    //     }
+    //
+    // });
 
-<!--        if (user.id == 1) {-->
-<!--            $("#role").attr("href", "/doorManage/user/role_msg");-->
-<!--        } else {-->
-<!--            $(".role").hide();-->
-<!--        }-->
-
-<!--    });-->
-
-<!--    $("#loginOut").click(function () {-->
-<!--        $.cookie('user', '', {expires: -1, path: '/'});-->
-<!--        window.location.href = "/doorManage";-->
-<!--    })-->
+    $("#loginOut").click(function () {
+        $.cookie('user', '', {expires: -1, path: '/'});
+        window.location.href = "/";
+    })
 
 
-<!--</script>-->
+</script>
 
 </body>
 

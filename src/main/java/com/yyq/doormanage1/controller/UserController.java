@@ -38,6 +38,15 @@ public class UserController {
 		return result;
 	}
 
+	@RequestMapping("/queryById")
+	@ResponseBody
+	public Result queryById(@RequestParam Integer id) {
+		Result result = new ResultSupport();
+		User user = userService.queryById(id);
+		result.setModel("entity", user);
+		return result;
+	}
+
 	/**
 	 * 登录
 	 */
@@ -68,6 +77,36 @@ public class UserController {
 		user.setAccount(account);
 		user.setUsername(username);
 		return userService.save(user);
+	}
+
+	/** 审核 */
+	@RequestMapping("/auth/{status}")
+	@ResponseBody
+	public Result auth(@PathVariable Integer status,@RequestParam("id") Integer id) {
+		Result result = new ResultSupport();
+		User user = userService.queryById(id);
+		user.setStatus(status);
+		userService.update(user);
+		result.setModel("user",user);
+		return result;
+	}
+
+	/** 修改个人信息 */
+	@RequestMapping("/update")
+	@ResponseBody
+	public Result update(@RequestBody User user) {
+		Result result = new ResultSupport();
+		userService.update(user);
+		User new_user = userService.queryById(user.getId());
+		result.setModel("user",new_user);
+		return result;
+	}
+
+	/** 申请门禁权限 */
+	@RequestMapping("/apply")
+	@ResponseBody
+	public Result apply(@RequestParam("userId") Integer userId,@RequestParam("roomId") Integer roomId) {
+		return userService.apply(userId,roomId);
 	}
 
 	@RequestMapping("/queryByWechatId")
